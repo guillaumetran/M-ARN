@@ -22,6 +22,37 @@ def checkFormatTxt(txt):
         sys.exit(0)
     print ("[+] OK brackets")
 
+
+"""def getTabBracket(txt):
+    tabBracks  = []
+    flag = 1
+    for i in range(0, len(txt)):
+        if txt[i] == ")":
+            #print ("%d flag %d" % (i , flag))
+            flag += 1
+            value = OpenB(txt[0:i], flag)
+            print ("%d match avec %d" % (value, i))"""
+
+def getTabBracket(txt):
+    tabOpen = []
+    tabClose = []
+    tabGlobal = []
+
+    for i in range(0, len(txt)):
+        if txt[i] == '(':
+            tabOpen.append(i)
+        if txt[i] == ')':
+            tabClose.append(i)
+    for k in range(0, len(tabOpen)):
+        #print ("%d avec %d" % (k, len(tabOpen) -k - 1 ))
+        tabGlobal.append([tabOpen[k],tabClose[len(tabOpen) -k - 1]])
+    #print (tabOpen)
+    #print (tabClose)
+    print (tabGlobal)
+
+
+#ptr = 0
+
 if __name__ == '__main__':
     if len(sys.argv) != 4 :
         usage()
@@ -30,3 +61,4 @@ if __name__ == '__main__':
     TxtMolecul = sys.argv[3]
     checkSize(SymbolMolecul, TxtMolecul)
     checkFormatTxt(TxtMolecul)
+    tabBracket = getTabBracket(TxtMolecul)
