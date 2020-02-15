@@ -1,0 +1,39 @@
+<head>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+    <script src="//unpkg.com/three"></script>
+    <script src="//unpkg.com/three-spritetext"></script>
+    <script src="//unpkg.com/force-graph"></script>
+    <!--<script src="../../dist/3d-force-graph.js"></script>-->
+</head>
+
+<body>
+    <div id="3d-graph"></div>
+    <script>
+        const schema = [".", ".", ".", "(", "(", "(", "(", ".", ".", ".", ".", ")", ")", ")", ")"];
+        let links = [];
+        schema.forEach((element, index) => {
+            links.push(
+                { source: index, target: index === schema.length ? index : index + 1, curvature: element === "(" || element === ")" ? 0 : 0 },
+            );
+        });
+        console.log(links);
+        links.push({ source: 3, target: 14, curvature: 0 })
+        links.push({ source: 4, target: 13, curvature: 0 })
+        links.push({ source: 5, target: 12, curvature: 0 })
+        links.push({ source: 6, target: 11, curvature: 0 })
+        const gData = {
+            nodes: [...Array(schema.length + 1).keys()].map(i => ({ id: i })),
+            links
+        };
+        const Graph = ForceGraph()
+            (document.getElementById('3d-graph'))
+            .linkCurvature('curvature')
+            .nodeAutoColorBy('id')
+            .linkDirectionalParticles(2)
+            .graphData(gData);
+    </script>
+</body>
