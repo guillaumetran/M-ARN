@@ -33,6 +33,35 @@ def checkFormatTxt(txt):
             value = OpenB(txt[0:i], flag)
             print ("%d match avec %d" % (value, i))"""
 
+
+
+
+def rewritestr(txt):
+    tabBracks  = []
+    while txt.find(')') != -1:
+        for i in range(0, len(txt)):
+            if txt[i] == ')':
+                nb = txt[0:i].rfind('(')
+                print ("La parenthese ouvrante N°%d match avec la parenthese ouvrante = N°%d"% (i, nb))
+                s = list(txt)
+                s[i] = 'x'
+                s[nb] = 'x'
+                txt = "".join(s)
+
+                emptystr = "." * len(txt)
+                n = list(emptystr)
+                n[i] = ')'
+                n[nb] = '('
+                emptystr = "".join(n)
+                tabBracks.append([nb,i])
+                break
+        print(emptystr)
+
+    return (tabBracks)
+        #print (txt)
+            #print ("%c match avec = %c"% (txt[i], txt[nb]))
+
+
 def getTabBracket(txt):
     tabOpen = []
     tabClose = []
@@ -49,8 +78,17 @@ def getTabBracket(txt):
     #print (tabOpen)
     #print (tabClose)
     print (tabGlobal)
+    return (tabGlobal)
 
 
+def fusion(tabBracket):
+    bFusion = []
+    for i in range(1, len(tabBracket)):
+        #if (tabBracket[i][0]  + 1 == tabBracket[i - 1][0]  and tabBracket[i][0] == tabBracket[i - 1][0])
+        if (tabBracket[i][0] == tabBracket[i - 1][0] + 1 and tabBracket[i][1] + 1 ==tabBracket[i - 1][1]):
+            print ("On fusionne [%d,%d] avec [%d,%d]" %(tabBracket[i][0],  tabBracket[i][1] , tabBracket[i -1 ][0], tabBracket[i -1 ][1]))
+        #    tabBracket[i - 1] = [0, 0]
+    print (tabBracket)
 #ptr = 0
 
 if __name__ == '__main__':
@@ -61,4 +99,7 @@ if __name__ == '__main__':
     TxtMolecul = sys.argv[3]
     checkSize(SymbolMolecul, TxtMolecul)
     checkFormatTxt(TxtMolecul)
-    tabBracket = getTabBracket(TxtMolecul)
+    tabBracket = rewritestr(TxtMolecul)
+    print (tabBracket)
+    #tabBracket = getTabBracket(TxtMolecul)
+    #fusion(tabBracket)
