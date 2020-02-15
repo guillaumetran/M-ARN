@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-
+import json
 def usage():
   print("Usage : [name] [symbol] [txt]")
   print("Exemple : >rna AGCAGGGCAGAAGCCCACAUGGUU ....((((....))((....))))")
@@ -38,6 +38,9 @@ def checkFormatTxt(txt):
 
 def rewritestr(txt):
     tabBracks  = []
+    bracks = []
+    tabBracks.append({
+        'string': txt})
     while txt.find(')') != -1:
         for i in range(0, len(txt)):
             if txt[i] == ')':
@@ -53,10 +56,16 @@ def rewritestr(txt):
                 n[i] = ')'
                 n[nb] = '('
                 emptystr = "".join(n)
-                tabBracks.append([nb,i])
+                bracks.append({
+                    '(': nb,
+                    ')':i,})
+
+
+
                 break
         print(emptystr)
-
+    tabBracks.append({
+        'bracks': bracks})
     return (tabBracks)
         #print (txt)
             #print ("%c match avec = %c"% (txt[i], txt[nb]))
@@ -101,5 +110,7 @@ if __name__ == '__main__':
     checkFormatTxt(TxtMolecul)
     tabBracket = rewritestr(TxtMolecul)
     print (tabBracket)
+    with open('data.json', 'w') as outfile:
+        json.dump(tabBracket, outfile)
     #tabBracket = getTabBracket(TxtMolecul)
     #fusion(tabBracket)

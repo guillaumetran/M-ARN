@@ -1,0 +1,46 @@
+<head>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+    <script src="//unpkg.com/three"></script>
+    <script src="//unpkg.com/three-spritetext"></script>
+    <script src="//unpkg.com/force-graph"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!--<script src="../../dist/3d-force-graph.js"></script>-->
+</head>
+
+<body>
+    <div id="3d-graph"></div>
+    <script>
+        $.getJSON("../data.json", function (json) {
+            let str = json[0].string;
+            const schema = str.split("");
+            let links = [];
+            schema.forEach((element, index) => {
+                links.push(
+                    { source: index, target: index === schema.length ? index : index + 1, curvature: 0 },
+                );
+            });
+            let brackets = json[1].bracks;
+            brackets.forEach((element, index) => {
+                links.push(
+                    { source: element["("], target: element[")"], curvature: 0 },
+                );
+            });
+            const gData = {
+                nodes: [...Array(schema.length + 1).keys()].map(i => ({ id: i })),
+                links
+            };
+            const Graph = ForceGraph()
+                (document.getElementById('3d-graph'))
+                .linkCurvature('curvature')
+                .nodeAutoColorBy('id')
+                .linkDirectionalParticles(2)
+                .graphData(gData);
+        });
+
+    </script>
+</body>
